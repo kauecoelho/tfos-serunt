@@ -55,6 +55,8 @@ export type Slide = {
   tableRows?:   TableRow[];
   /** Itens para o fluxograma B→E→T→A (variante "cycle") */
   cycleItems?:  { letter: string; name: string; description: string }[];
+  /** Caminho da imagem em /public (ex: "/provas/foto.jpg"). Se omitido, exibe placeholder. */
+  imageSrc?:    string;
 };
 
 /* ── Atalhos internos (não exportados) ─────────────────────────────────────── */
@@ -181,9 +183,9 @@ export const SLIDES: Slide[] = [
     ],
   },
 
-  /* ── SLIDE 1001: IMAGE PLACEHOLDER (entre 15 e 16) ──────────────────── */
-  /* Mudança #1: placeholder fullscreen para prints de depoimentos          */
-  { id: 1001, variant: "image" },
+  /* ── SLIDE 1001: IMAGE — Provas Sociais (entre 15 e 16) ─────────────── */
+  /* Coloque o arquivo em: public/provas/Provas Sociais (Imagens).png       */
+  { id: 1001, variant: "image", imageSrc: "/provas/Provas Sociais (Imagens).png" },
 
   {
     id: 16,

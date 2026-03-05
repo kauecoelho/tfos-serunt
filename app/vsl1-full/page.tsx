@@ -94,6 +94,7 @@ function renderSlide(slide: Slide): React.ReactNode {
     tableRows = [],
     label,
     cycleItems = [],
+    imageSrc,
   } = slide;
 
   const labelEl = label ? (
@@ -169,9 +170,15 @@ function renderSlide(slide: Slide): React.ReactNode {
             <p className="st">{renderParts(parts)}</p>
           </div>
           <div className="split-right">
-            <span className="img-icon">📱</span>
-            <span>Print WhatsApp</span>
-            <span>1080 × 1920</span>
+            {imageSrc ? (
+              <img src={imageSrc} alt="" className="split-img" />
+            ) : (
+              <>
+                <span className="img-icon">📱</span>
+                <span>Print WhatsApp</span>
+                <span>1080 × 1920</span>
+              </>
+            )}
           </div>
         </section>
       );
@@ -190,11 +197,15 @@ function renderSlide(slide: Slide): React.ReactNode {
       return (
         <section key={id} className="s-image">
           {labelEl}
-          <div className="img-full-placeholder">
-            <span className="img-icon">🖼️</span>
-            <span>Imagem / Print</span>
-            <span>1920 × 1080</span>
-          </div>
+          {imageSrc ? (
+            <img src={imageSrc} alt="" className="img-full" />
+          ) : (
+            <div className="img-full-placeholder">
+              <span className="img-icon">🖼️</span>
+              <span>Imagem / Print</span>
+              <span>1920 × 1080</span>
+            </div>
+          )}
         </section>
       );
 
@@ -804,6 +815,19 @@ export default function PauloBastos() {
         .img-full-placeholder .img-icon {
           font-size: 3.2rem;
           opacity:   0.4;
+        }
+        .img-full {
+          width:       100%;
+          height:      100%;
+          object-fit:  cover;
+          display:     block;
+        }
+        .split-img {
+          width:         100%;
+          height:        100%;
+          object-fit:    cover;
+          border-radius: 18px;
+          display:       block;
         }
 
         /* ── Variante: Cycle (fluxograma B→E→T→A) ───────────────────────────── */
