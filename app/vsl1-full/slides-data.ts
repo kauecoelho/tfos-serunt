@@ -1282,7 +1282,7 @@ export const SLIDES: Slide[] = [
   {
     id: 161,
     variant: "offer",
-    imageSrc: "/provas/Bundle Stup.png",
+    imageSrc: "/mockups/Bundle Stup.png",
     parts: [t("R$ 197,00 à vista.")],
   },
 
