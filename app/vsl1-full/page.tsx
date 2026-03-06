@@ -867,7 +867,7 @@ export default function PauloBastos() {
           gap:            0.6vh;
         }
         .st-offer-sub {
-          font-size:      clamp(1rem, 2vw, 1.8rem) !important;
+          font-size:      clamp(2rem, 4vw, 3.6rem) !important;
           font-weight:    600 !important;
           color:          var(--text) !important;
           text-align:     center !important;
@@ -875,7 +875,7 @@ export default function PauloBastos() {
           margin:         0 !important;
         }
         .st-offer {
-          font-size:      clamp(2rem, 4.5vw, 4rem) !important;
+          font-size:      clamp(4rem, 9vw, 8rem) !important;
           font-weight:    800 !important;
           color:          var(--teal) !important;
           text-align:     center !important;
