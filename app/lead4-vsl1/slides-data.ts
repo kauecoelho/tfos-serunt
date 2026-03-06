@@ -244,8 +244,22 @@ export const SLIDES: Slide[] = [
 
   /* ── CASES ────────────────────────────────────────────────────────────── */
   {
+    id: 35,
+    variant: "split",
+    imageSrc: "/provas/helio.png",
+    parts: [
+      t("Hélio."),
+      p(" Arquiteto. Faturava "),
+      r("5 a 6 mil por mês."),
+      p(" Queria atender o Brasil todo de casa, sem aparecer. Hoje bate "),
+      t("R$ 100 mil de faturamento."),
+      p(" Com perfil dark. Sem nome no perfil. Sem dancinha. Sem aparecer."),
+    ],
+  },
+  {
     id: 36,
     variant: "split",
+    imageSrc: "/provas/antonio.png",
     label: "Antônio — CLT no Paraná",
     parts: [
       p("Vendia projeto por "),
@@ -272,12 +286,13 @@ export const SLIDES: Slide[] = [
   {
     id: 39,
     variant: "split",
-    label: "Letícia — estagiária",
+    imageSrc: "/provas/alao.png",
     parts: [
-      p("Ganhava "),
-      r("R$ 2.500."),
-      p(" Mesma crença: "),
-      r("\"Vou ter que cobrar barato pra competir.\""),
+      p("Ou então o "),
+      t("Alao,"),
+      p(" que fechou seu primeiro projeto de "),
+      t("R$ 16.000,00"),
+      p(" pelo tráfego."),
     ],
   },
   {
@@ -289,8 +304,7 @@ export const SLIDES: Slide[] = [
   {
     id: 41,
     parts: [
-      t("Hoje tem empresa própria."),
-      p(" 90% das vendas vêm do tráfego pago."),
+      t("Fechou. Sem negociar preço. Sem sumir. Sem perder pra concorrente barato."),
     ],
   },
 
