@@ -987,7 +987,7 @@ export const SLIDES: Slide[] = [
     imageSrc: "/provas/alao.png",
     parts: [
       p("Ou então o "),
-      t("Alão,"),
+      t("Alao,"),
       p(" que fechou seu primeiro projeto de "),
       t("R$ 16.000,00"),
       p(" pelo tráfego."),
