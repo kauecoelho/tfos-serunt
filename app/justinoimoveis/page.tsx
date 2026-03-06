@@ -17,6 +17,9 @@ import {
   Search,
   Menu,
   X,
+  Award,
+  Building2,
+  Star,
 } from 'lucide-react'
 import { properties } from './properties'
 import type { Property } from './properties'
@@ -25,7 +28,7 @@ import type { Property } from './properties'
 const TEAL = '#163535'
 const TEAL_DARK = '#0D2525'
 const GOLD = '#C9A060'
-const CREAM = '#F5F1EB'
+const CREAM = '#F7F5F0'
 const GRADIENT = 'linear-gradient(135deg, #E91E8C 0%, #FF6B35 50%, #F5C518 100%)'
 const FONT = 'var(--font-montserrat, system-ui, sans-serif)'
 
@@ -59,7 +62,6 @@ function Logo({ size = 46 }: { size?: number }) {
           viewBox="0 0 26 30"
           fill="none"
         >
-          {/* House outline */}
           <path
             d="M13 2 L24 11 L24 27 L2 27 L2 11 Z"
             stroke={GOLD}
@@ -67,7 +69,6 @@ function Logo({ size = 46 }: { size?: number }) {
             fill="none"
             strokeLinejoin="round"
           />
-          {/* J mark */}
           <path
             d="M13 8 L13 20 Q13 24 9.5 24 Q7 24 7 21.5"
             stroke={GOLD}
@@ -75,7 +76,6 @@ function Logo({ size = 46 }: { size?: number }) {
             fill="none"
             strokeLinecap="round"
           />
-          {/* J cap */}
           <line
             x1="10.5"
             y1="8"
@@ -94,6 +94,7 @@ function Logo({ size = 46 }: { size?: number }) {
 // ─── Property Card ───────────────────────────────────────────────
 function PropertyCard({ property }: { property: Property }) {
   const [photo, setPhoto] = useState(0)
+  const [hovered, setHovered] = useState(false)
 
   const prev = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -113,58 +114,80 @@ function PropertyCard({ property }: { property: Property }) {
 
   return (
     <div
-      className="flex flex-col overflow-hidden bg-white shrink-0"
+      className="flex flex-col overflow-hidden shrink-0 transition-all duration-300"
       style={{
         width: 320,
-        boxShadow: '0 4px 24px rgba(22,53,53,0.1)',
+        background: '#FFFFFF',
+        borderRadius: 16,
+        boxShadow: hovered
+          ? '0 20px 48px rgba(22,53,53,0.18)'
+          : '0 4px 20px rgba(22,53,53,0.08)',
+        transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
+        transition: 'box-shadow 0.3s ease, transform 0.3s ease',
       }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       {/* Photo carousel */}
-      <div className="relative overflow-hidden" style={{ height: 200 }}>
+      <div className="relative overflow-hidden" style={{ height: 210, borderRadius: '16px 16px 0 0' }}>
         <img
           src={property.photos[photo]}
           alt={property.name}
           className="w-full h-full object-cover"
-          style={{ transition: 'opacity 0.3s' }}
+          style={{
+            transition: 'transform 0.5s ease',
+            transform: hovered ? 'scale(1.04)' : 'scale(1)',
+          }}
+        />
+
+        {/* Dark gradient bottom */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(to bottom, transparent 40%, rgba(13,37,37,0.5) 100%)',
+          }}
         />
 
         <button
           onClick={prev}
-          className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full flex items-center justify-center"
-          style={{ background: 'rgba(13,37,37,0.72)' }}
+          className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center transition-all"
+          style={{ background: 'rgba(13,37,37,0.7)', backdropFilter: 'blur(4px)' }}
         >
-          <ChevronLeft size={14} color="white" />
+          <ChevronLeft size={15} color="white" />
         </button>
         <button
           onClick={next}
-          className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full flex items-center justify-center"
-          style={{ background: 'rgba(13,37,37,0.72)' }}
+          className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center transition-all"
+          style={{ background: 'rgba(13,37,37,0.7)', backdropFilter: 'blur(4px)' }}
         >
-          <ChevronRight size={14} color="white" />
+          <ChevronRight size={15} color="white" />
         </button>
 
         {/* Dots */}
-        <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 flex gap-1">
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
           {property.photos.map((_, i) => (
             <button
               key={i}
-              onClick={(e) => {
-                e.preventDefault()
-                setPhoto(i)
-              }}
-              className="w-1.5 h-1.5 rounded-full"
+              onClick={(e) => { e.preventDefault(); setPhoto(i) }}
+              className="rounded-full transition-all"
               style={{
-                background:
-                  i === photo ? 'white' : 'rgba(255,255,255,0.45)',
+                width: i === photo ? 16 : 6,
+                height: 6,
+                background: i === photo ? GOLD : 'rgba(255,255,255,0.5)',
               }}
             />
           ))}
         </div>
 
-        {/* Badge */}
+        {/* Operation Badge */}
         <span
-          className="absolute top-3 left-3 text-xs font-bold px-2.5 py-1 tracking-widest uppercase"
-          style={{ background: GOLD, color: TEAL }}
+          className="absolute top-3 left-3 text-xs font-bold px-3 py-1 tracking-wider uppercase"
+          style={{
+            background: GOLD,
+            color: TEAL_DARK,
+            borderRadius: 6,
+            fontFamily: FONT,
+          }}
         >
           {property.operation}
         </span>
@@ -173,11 +196,11 @@ function PropertyCard({ property }: { property: Property }) {
       {/* Content */}
       <div className="p-5 flex flex-col flex-1">
         <div
-          className="flex items-center gap-1 mb-1.5"
-          style={{ color: '#999', fontSize: 11 }}
+          className="flex items-center gap-1.5 mb-2"
+          style={{ color: '#888', fontSize: 12 }}
         >
-          <MapPin size={11} />
-          <span>{property.neighborhood} · Itajaí, SC</span>
+          <MapPin size={12} style={{ color: GOLD }} />
+          <span style={{ fontFamily: FONT }}>{property.neighborhood} · {property.city}, SC</span>
         </div>
 
         <h3
@@ -191,16 +214,16 @@ function PropertyCard({ property }: { property: Property }) {
         <div
           className="grid grid-cols-4 gap-1 py-3 mb-4"
           style={{
-            borderTop: '1px solid #EAE6DF',
-            borderBottom: '1px solid #EAE6DF',
+            borderTop: '1px solid #EDEBE6',
+            borderBottom: '1px solid #EDEBE6',
           }}
         >
           {stats.map(({ Icon, val }, i) => (
             <div key={i} className="flex flex-col items-center gap-1">
-              <Icon size={15} style={{ color: GOLD }} />
+              <Icon size={14} style={{ color: GOLD }} />
               <span
                 className="font-semibold"
-                style={{ color: '#444', fontSize: 11 }}
+                style={{ color: '#555', fontSize: 11, fontFamily: FONT }}
               >
                 {val}
               </span>
@@ -211,18 +234,31 @@ function PropertyCard({ property }: { property: Property }) {
         {/* Price + CTA */}
         <div className="flex items-center justify-between mt-auto">
           <div>
-            <p style={{ color: '#aaa', fontSize: 11 }}>Valor</p>
+            <p style={{ color: '#aaa', fontSize: 11, fontFamily: FONT }}>Valor</p>
             <p
               className="font-extrabold text-base"
-              style={{ color: TEAL }}
+              style={{ color: TEAL, fontFamily: FONT }}
             >
               {formatPrice(property.price)}
             </p>
           </div>
           <Link
             href={`/imovel/${property.slug}`}
-            className="text-sm font-bold px-4 py-2.5 tracking-wide uppercase transition-opacity hover:opacity-85"
-            style={{ background: TEAL, color: 'white', fontFamily: FONT }}
+            className="text-sm font-bold px-5 py-2.5 tracking-wide uppercase transition-all"
+            style={{
+              background: TEAL,
+              color: 'white',
+              fontFamily: FONT,
+              borderRadius: 8,
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.background = GOLD
+              ;(e.currentTarget as HTMLElement).style.color = TEAL_DARK
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.background = TEAL
+              ;(e.currentTarget as HTMLElement).style.color = 'white'
+            }}
           >
             Ver mais
           </Link>
@@ -244,15 +280,24 @@ export default function JustinoBrokersHome() {
     })
   }
 
+  const stats = [
+    { Icon: Award, number: '15+', label: 'Anos de Experiência', desc: 'Referência no mercado imobiliário de Itajaí' },
+    { Icon: Building2, number: '200+', label: 'Imóveis Negociados', desc: 'Portfólio diversificado de alto padrão' },
+    { Icon: Star, number: '98%', label: 'Clientes Satisfeitos', desc: 'Excelência em atendimento e resultados' },
+  ]
+
   return (
     <div style={{ fontFamily: FONT, background: CREAM }}>
+
       {/* ── NAVBAR ── */}
       <nav
         className="fixed top-0 left-0 right-0 z-50"
-        style={{ background: TEAL }}
+        style={{
+          background: TEAL_DARK,
+          borderBottom: '1px solid rgba(201,160,96,0.12)',
+        }}
       >
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          {/* Logo */}
           <Link href="/justinoimoveis" className="flex items-center gap-3">
             <Logo size={46} />
             <div>
@@ -264,7 +309,7 @@ export default function JustinoBrokersHome() {
               </p>
               <p
                 className="text-xs tracking-[0.28em] uppercase font-light"
-                style={{ color: 'rgba(201,160,96,0.55)', fontFamily: FONT }}
+                style={{ color: 'rgba(201,160,96,0.5)', fontFamily: FONT }}
               >
                 Soluções Imobiliárias
               </p>
@@ -272,27 +317,40 @@ export default function JustinoBrokersHome() {
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-7">
-            {['#imoveis', '#contato'].map((href, i) => (
+          <div className="hidden md:flex items-center gap-8">
+            {[
+              { href: '#imoveis', label: 'Imóveis' },
+              { href: '#sobre', label: 'Sobre' },
+              { href: '#contato', label: 'Contato' },
+            ].map(({ href, label }) => (
               <a
                 key={href}
                 href={href}
-                className="text-sm font-semibold tracking-wide transition-colors"
-                style={{ color: 'rgba(255,255,255,0.65)', fontFamily: FONT }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.color = GOLD)
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.color = 'rgba(255,255,255,0.65)')
-                }
+                className="text-sm font-medium tracking-wide transition-colors relative group"
+                style={{ color: 'rgba(255,255,255,0.6)', fontFamily: FONT }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = GOLD)}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.6)')}
               >
-                {i === 0 ? 'Imóveis' : 'Contato'}
+                {label}
               </a>
             ))}
             <a
               href="#contato"
-              className="text-sm font-extrabold px-5 py-2.5 tracking-widest uppercase transition-opacity hover:opacity-85"
-              style={{ background: GOLD, color: TEAL, fontFamily: FONT }}
+              className="text-sm font-bold px-6 py-2.5 tracking-widest uppercase transition-all"
+              style={{
+                background: GOLD,
+                color: TEAL_DARK,
+                fontFamily: FONT,
+                borderRadius: 8,
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.opacity = '0.88'
+                ;(e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)'
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.opacity = '1'
+                ;(e.currentTarget as HTMLElement).style.transform = 'translateY(0)'
+              }}
             >
               Falar Conosco
             </a>
@@ -300,7 +358,7 @@ export default function JustinoBrokersHome() {
 
           {/* Mobile toggle */}
           <button
-            className="md:hidden"
+            className="md:hidden w-10 h-10 flex items-center justify-center"
             onClick={() => setMenuOpen(!menuOpen)}
             style={{ color: 'white' }}
           >
@@ -314,24 +372,36 @@ export default function JustinoBrokersHome() {
             className="md:hidden px-6 py-5 flex flex-col gap-4"
             style={{
               background: TEAL_DARK,
-              borderTop: '1px solid rgba(255,255,255,0.06)',
+              borderTop: '1px solid rgba(201,160,96,0.1)',
             }}
           >
-            <a
-              href="#imoveis"
-              className="text-sm font-semibold"
-              style={{ color: 'rgba(255,255,255,0.7)' }}
-              onClick={() => setMenuOpen(false)}
-            >
-              Imóveis
-            </a>
+            {[
+              { href: '#imoveis', label: 'Imóveis' },
+              { href: '#sobre', label: 'Sobre' },
+              { href: '#contato', label: 'Contato' },
+            ].map(({ href, label }) => (
+              <a
+                key={href}
+                href={href}
+                className="text-sm font-semibold py-1"
+                style={{ color: 'rgba(255,255,255,0.7)', fontFamily: FONT }}
+                onClick={() => setMenuOpen(false)}
+              >
+                {label}
+              </a>
+            ))}
             <a
               href="#contato"
-              className="text-sm font-semibold"
-              style={{ color: 'rgba(255,255,255,0.7)' }}
+              className="text-sm font-bold px-5 py-3 text-center tracking-widest uppercase mt-1"
+              style={{
+                background: GOLD,
+                color: TEAL_DARK,
+                fontFamily: FONT,
+                borderRadius: 8,
+              }}
               onClick={() => setMenuOpen(false)}
             >
-              Contato
+              Falar Conosco
             </a>
           </div>
         )}
@@ -342,70 +412,81 @@ export default function JustinoBrokersHome() {
         className="relative flex items-center justify-center"
         style={{ minHeight: '100vh' }}
       >
-        {/* Background */}
         <img
           src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1920&q=80"
           alt="Itajaí, Santa Catarina"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        {/* Overlay */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              'linear-gradient(to bottom, rgba(13,37,37,0.45) 0%, rgba(13,37,37,0.65) 50%, rgba(13,37,37,0.92) 100%)',
+              'linear-gradient(to bottom, rgba(9,28,28,0.5) 0%, rgba(9,28,28,0.62) 40%, rgba(9,28,28,0.9) 100%)',
           }}
         />
 
         {/* Content */}
         <div className="relative z-10 text-center text-white px-4 w-full max-w-5xl mx-auto">
           {/* Eyebrow */}
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="h-px w-10" style={{ background: GOLD }} />
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <div
+              className="h-px w-12"
+              style={{ background: `linear-gradient(to right, transparent, ${GOLD})` }}
+            />
             <span
-              className="text-xs font-bold tracking-[0.45em] uppercase"
+              className="text-xs font-bold tracking-[0.5em] uppercase"
               style={{ color: GOLD, fontFamily: FONT }}
             >
               Itajaí · Santa Catarina
             </span>
-            <div className="h-px w-10" style={{ background: GOLD }} />
+            <div
+              className="h-px w-12"
+              style={{ background: `linear-gradient(to left, transparent, ${GOLD})` }}
+            />
           </div>
 
           <h1
-            className="font-black text-4xl md:text-6xl leading-tight mb-4"
-            style={{ fontFamily: FONT, letterSpacing: '-0.01em' }}
+            className="font-black leading-[1.05] mb-6"
+            style={{
+              fontFamily: FONT,
+              fontSize: 'clamp(2.6rem, 6vw, 5rem)',
+              letterSpacing: '-0.02em',
+            }}
           >
             Encontre o Imóvel
             <br />
             <span style={{ color: GOLD }}>dos Seus Sonhos</span>
           </h1>
+
           <p
-            className="text-base md:text-lg mb-10"
-            style={{ color: 'rgba(255,255,255,0.6)', fontFamily: FONT }}
+            className="text-base md:text-lg mb-12 mx-auto"
+            style={{
+              color: 'rgba(255,255,255,0.55)',
+              fontFamily: FONT,
+              maxWidth: 500,
+              lineHeight: 1.7,
+            }}
           >
             Soluções imobiliárias de alto padrão em Itajaí e região
           </p>
 
           {/* Search form */}
           <div
-            className="p-5 md:p-6 mx-auto"
+            className="p-6 md:p-7 mx-auto"
             style={{
-              background: 'rgba(13,37,37,0.78)',
-              backdropFilter: 'blur(14px)',
-              border: '1px solid rgba(201,160,96,0.22)',
-              maxWidth: 900,
+              background: 'rgba(9,28,28,0.82)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(201,160,96,0.2)',
+              borderRadius: 16,
+              maxWidth: 920,
             }}
           >
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {[
                 {
-                  label: 'Tipo',
+                  label: 'Operação',
                   name: 'op',
-                  options: [
-                    'Compra / Aluguel',
-                    'Compra',
-                    'Aluguel',
-                  ],
+                  options: ['Compra / Aluguel', 'Compra', 'Aluguel'],
                 },
                 {
                   label: 'Tipo de Imóvel',
@@ -436,29 +517,26 @@ export default function JustinoBrokersHome() {
                   ],
                 },
               ].map(({ label, name, options }) => (
-                <div key={name} className="flex flex-col gap-1.5 text-left">
+                <div key={name} className="flex flex-col gap-2 text-left">
                   <label
                     className="text-xs font-bold uppercase tracking-widest"
-                    style={{ color: 'rgba(201,160,96,0.65)', fontFamily: FONT }}
+                    style={{ color: 'rgba(201,160,96,0.6)', fontFamily: FONT }}
                   >
                     {label}
                   </label>
                   <select
                     name={name}
-                    className="px-3 py-3 text-sm appearance-none focus:outline-none"
+                    className="px-4 py-3 text-sm appearance-none focus:outline-none"
                     style={{
-                      background: 'rgba(255,255,255,0.07)',
-                      border: '1px solid rgba(201,160,96,0.22)',
-                      color: 'white',
+                      background: 'rgba(255,255,255,0.06)',
+                      border: '1px solid rgba(201,160,96,0.2)',
+                      color: 'rgba(255,255,255,0.85)',
                       fontFamily: FONT,
+                      borderRadius: 8,
                     }}
                   >
                     {options.map((o) => (
-                      <option
-                        key={o}
-                        value={o}
-                        style={{ background: TEAL, color: 'white' }}
-                      >
+                      <option key={o} value={o} style={{ background: TEAL_DARK, color: 'white' }}>
                         {o}
                       </option>
                     ))}
@@ -468,8 +546,21 @@ export default function JustinoBrokersHome() {
             </div>
 
             <button
-              className="mt-3 w-full py-3.5 text-sm font-extrabold tracking-widest uppercase flex items-center justify-center gap-2 transition-opacity hover:opacity-85"
-              style={{ background: GOLD, color: TEAL, fontFamily: FONT }}
+              className="mt-5 w-full py-4 text-sm font-extrabold tracking-widest uppercase flex items-center justify-center gap-2 transition-all"
+              style={{
+                background: GOLD,
+                color: TEAL_DARK,
+                fontFamily: FONT,
+                borderRadius: 10,
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.opacity = '0.88'
+                ;(e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)'
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.opacity = '1'
+                ;(e.currentTarget as HTMLElement).style.transform = 'translateY(0)'
+              }}
             >
               <Search size={16} />
               Buscar Imóveis
@@ -480,11 +571,11 @@ export default function JustinoBrokersHome() {
         {/* Scroll indicator */}
         <div
           className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-          style={{ color: 'rgba(255,255,255,0.35)' }}
+          style={{ color: 'rgba(255,255,255,0.3)' }}
         >
           <div
             className="w-px animate-pulse"
-            style={{ height: 40, background: GOLD }}
+            style={{ height: 44, background: `linear-gradient(to bottom, ${GOLD}, transparent)` }}
           />
           <span
             className="text-xs tracking-widest uppercase font-medium"
@@ -496,40 +587,40 @@ export default function JustinoBrokersHome() {
       </section>
 
       {/* ── FEATURED PROPERTIES ── */}
-      <section id="imoveis" style={{ background: CREAM, padding: '80px 0' }}>
+      <section id="imoveis" style={{ background: CREAM, padding: '96px 0' }}>
         <div className="max-w-7xl mx-auto px-6">
           {/* Header */}
-          <div className="flex items-end justify-between mb-12">
+          <div className="flex items-end justify-between mb-14">
             <div>
               <p
-                className="text-xs font-extrabold tracking-[0.4em] uppercase mb-2"
+                className="text-xs font-extrabold tracking-[0.45em] uppercase mb-3"
                 style={{ color: GOLD, fontFamily: FONT }}
               >
                 Seleção Especial
               </p>
               <h2
-                className="font-black text-3xl md:text-4xl"
+                className="font-black text-3xl md:text-4xl leading-tight"
                 style={{ color: TEAL, fontFamily: FONT }}
               >
                 Imóveis em Destaque
               </h2>
-              {/* Gradient underline */}
               <div
-                className="mt-3"
-                style={{ height: 3, width: 56, background: GRADIENT }}
+                className="mt-4"
+                style={{ height: 3, width: 64, background: GRADIENT, borderRadius: 2 }}
               />
             </div>
 
             {/* Desktop nav arrows */}
-            <div className="hidden md:flex gap-2">
+            <div className="hidden md:flex gap-3">
               {(['left', 'right'] as const).map((dir) => (
                 <button
                   key={dir}
                   onClick={() => scroll(dir)}
-                  className="w-11 h-11 flex items-center justify-center transition-all"
+                  className="w-12 h-12 flex items-center justify-center transition-all"
                   style={{
-                    border: '1.5px solid #DDD8CF',
+                    border: `1.5px solid rgba(22,53,53,0.2)`,
                     color: TEAL,
+                    borderRadius: 10,
                   }}
                   onMouseEnter={(e) => {
                     const el = e.currentTarget as HTMLElement
@@ -541,14 +632,10 @@ export default function JustinoBrokersHome() {
                     const el = e.currentTarget as HTMLElement
                     el.style.background = ''
                     el.style.color = TEAL
-                    el.style.borderColor = '#DDD8CF'
+                    el.style.borderColor = 'rgba(22,53,53,0.2)'
                   }}
                 >
-                  {dir === 'left' ? (
-                    <ChevronLeft size={18} />
-                  ) : (
-                    <ChevronRight size={18} />
-                  )}
+                  {dir === 'left' ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
                 </button>
               ))}
             </div>
@@ -557,7 +644,7 @@ export default function JustinoBrokersHome() {
           {/* Carousel */}
           <div
             ref={carouselRef}
-            className="flex gap-5 overflow-x-auto pb-4"
+            className="flex gap-6 overflow-x-auto pb-6"
             style={{ scrollbarWidth: 'none' }}
           >
             {properties.map((p) => (
@@ -566,168 +653,349 @@ export default function JustinoBrokersHome() {
           </div>
 
           {/* Mobile arrows */}
-          <div className="flex md:hidden justify-center gap-2 mt-6">
+          <div className="flex md:hidden justify-center gap-3 mt-6">
             {(['left', 'right'] as const).map((dir) => (
               <button
                 key={dir}
                 onClick={() => scroll(dir)}
-                className="w-11 h-11 flex items-center justify-center"
-                style={{ border: '1.5px solid #DDD8CF', color: TEAL }}
+                className="w-12 h-12 flex items-center justify-center"
+                style={{ border: '1.5px solid rgba(22,53,53,0.2)', color: TEAL, borderRadius: 10 }}
               >
-                {dir === 'left' ? (
-                  <ChevronLeft size={18} />
-                ) : (
-                  <ChevronRight size={18} />
-                )}
+                {dir === 'left' ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
               </button>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── CONTACT ── */}
-      <section id="contato" style={{ background: TEAL, padding: '80px 0' }}>
-        <div className="max-w-3xl mx-auto px-6">
-          <div className="text-center mb-12">
+      {/* ── WHY JUSTINO BROKERS ── */}
+      <section
+        id="sobre"
+        style={{
+          background: TEAL_DARK,
+          padding: '96px 0',
+        }}
+      >
+        <div className="max-w-7xl mx-auto px-6">
+          {/* Section header */}
+          <div className="text-center mb-16">
             <p
-              className="text-xs font-extrabold tracking-[0.4em] uppercase mb-2"
+              className="text-xs font-extrabold tracking-[0.45em] uppercase mb-3"
               style={{ color: GOLD, fontFamily: FONT }}
             >
-              Entre em Contato
+              Nossa Expertise
             </p>
             <h2
               className="font-black text-3xl md:text-4xl text-white"
               style={{ fontFamily: FONT }}
             >
-              Fale com um Especialista
+              Por que escolher a Justino Brokers?
             </h2>
             <div
-              className="mt-3 mx-auto"
-              style={{ height: 3, width: 56, background: GRADIENT }}
+              className="mt-4 mx-auto"
+              style={{ height: 3, width: 64, background: GRADIENT, borderRadius: 2 }}
             />
-            <p
-              className="mt-4 text-sm"
-              style={{ color: 'rgba(255,255,255,0.45)', fontFamily: FONT }}
-            >
-              Nossa equipe está pronta para encontrar o imóvel ideal para você
-            </p>
           </div>
 
-          <form className="flex flex-col gap-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {[
-                {
-                  label: 'Nome Completo',
-                  type: 'text',
-                  placeholder: 'Seu nome',
-                },
-                {
-                  label: 'Telefone / WhatsApp',
-                  type: 'tel',
-                  placeholder: '(47) 99999-9999',
-                },
-              ].map(({ label, type, placeholder }) => (
-                <div key={label} className="flex flex-col gap-2">
-                  <label
-                    className="text-xs font-bold uppercase tracking-widest"
-                    style={{ color: 'rgba(201,160,96,0.65)', fontFamily: FONT }}
+          {/* Stats grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {stats.map(({ Icon, number, label, desc }) => (
+              <div
+                key={label}
+                className="text-center p-10 transition-all"
+                style={{
+                  background: 'rgba(255,255,255,0.04)',
+                  border: '1px solid rgba(201,160,96,0.15)',
+                  borderRadius: 16,
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = 'rgba(201,160,96,0.07)'
+                  ;(e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,160,96,0.35)'
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)'
+                  ;(e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,160,96,0.15)'
+                }}
+              >
+                <div
+                  className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-6"
+                  style={{ background: 'rgba(201,160,96,0.12)', border: `1px solid rgba(201,160,96,0.25)` }}
+                >
+                  <Icon size={22} style={{ color: GOLD }} />
+                </div>
+                <p
+                  className="font-black text-5xl mb-2"
+                  style={{ color: GOLD, fontFamily: FONT, lineHeight: 1 }}
+                >
+                  {number}
+                </p>
+                <p
+                  className="font-bold text-base mb-3"
+                  style={{ color: 'white', fontFamily: FONT }}
+                >
+                  {label}
+                </p>
+                <p
+                  className="text-sm leading-relaxed"
+                  style={{ color: 'rgba(255,255,255,0.4)', fontFamily: FONT }}
+                >
+                  {desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CONTACT ── */}
+      <section id="contato" style={{ background: CREAM, padding: '96px 0' }}>
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+
+            {/* Left – Info */}
+            <div>
+              <p
+                className="text-xs font-extrabold tracking-[0.45em] uppercase mb-3"
+                style={{ color: GOLD, fontFamily: FONT }}
+              >
+                Entre em Contato
+              </p>
+              <h2
+                className="font-black text-3xl md:text-4xl mb-4 leading-tight"
+                style={{ color: TEAL, fontFamily: FONT }}
+              >
+                Fale com um<br />Especialista
+              </h2>
+              <div
+                className="mb-8"
+                style={{ height: 3, width: 64, background: GRADIENT, borderRadius: 2 }}
+              />
+              <p
+                className="text-base leading-relaxed mb-10"
+                style={{ color: '#666', fontFamily: FONT, maxWidth: 420 }}
+              >
+                Nossa equipe está pronta para encontrar o imóvel ideal para você. Atendimento personalizado e consultoria especializada no mercado de Itajaí.
+              </p>
+
+              {/* Contact details */}
+              <div className="flex flex-col gap-5 mb-10">
+                {[
+                  { Icon: Phone, text: '(47) 9 9999-9999', label: 'Telefone / WhatsApp' },
+                  { Icon: Mail, text: 'contato@justinobrokers.com.br', label: 'E-mail' },
+                  { Icon: MapPin, text: 'Itajaí, Santa Catarina', label: 'Localização' },
+                ].map(({ Icon, text, label }) => (
+                  <div key={text} className="flex items-start gap-4">
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 mt-0.5"
+                      style={{ background: 'rgba(22,53,53,0.08)' }}
+                    >
+                      <Icon size={16} style={{ color: GOLD }} />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-wider mb-0.5" style={{ color: '#aaa', fontFamily: FONT }}>
+                        {label}
+                      </p>
+                      <p className="text-sm font-semibold" style={{ color: TEAL, fontFamily: FONT }}>
+                        {text}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Social */}
+              <div className="flex gap-3">
+                {[
+                  { Icon: Instagram, label: 'Instagram' },
+                  { Icon: Facebook, label: 'Facebook' },
+                ].map(({ Icon, label }) => (
+                  <a
+                    key={label}
+                    href="#"
+                    className="w-10 h-10 flex items-center justify-center transition-all"
+                    style={{
+                      border: `1.5px solid rgba(22,53,53,0.2)`,
+                      color: TEAL,
+                      borderRadius: 8,
+                    }}
+                    onMouseEnter={(e) => {
+                      const el = e.currentTarget as HTMLElement
+                      el.style.background = TEAL
+                      el.style.color = 'white'
+                      el.style.borderColor = TEAL
+                    }}
+                    onMouseLeave={(e) => {
+                      const el = e.currentTarget as HTMLElement
+                      el.style.background = ''
+                      el.style.color = TEAL
+                      el.style.borderColor = 'rgba(22,53,53,0.2)'
+                    }}
                   >
-                    {label}
+                    <Icon size={16} />
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Right – Form */}
+            <div
+              className="p-8 md:p-10"
+              style={{
+                background: '#FFFFFF',
+                borderRadius: 20,
+                boxShadow: '0 8px 40px rgba(22,53,53,0.1)',
+                border: '1px solid rgba(22,53,53,0.06)',
+              }}
+            >
+              <h3
+                className="font-bold text-xl mb-6"
+                style={{ color: TEAL, fontFamily: FONT }}
+              >
+                Envie sua mensagem
+              </h3>
+
+              <form className="flex flex-col gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {[
+                    { label: 'Nome Completo', type: 'text', placeholder: 'Seu nome' },
+                    { label: 'Telefone / WhatsApp', type: 'tel', placeholder: '(47) 99999-9999' },
+                  ].map(({ label, type, placeholder }) => (
+                    <div key={label} className="flex flex-col gap-2">
+                      <label
+                        className="text-xs font-bold uppercase tracking-wider"
+                        style={{ color: '#888', fontFamily: FONT }}
+                      >
+                        {label}
+                      </label>
+                      <input
+                        type={type}
+                        placeholder={placeholder}
+                        className="px-4 py-3 text-sm focus:outline-none transition-all"
+                        style={{
+                          background: CREAM,
+                          border: '1.5px solid #E8E4DC',
+                          color: TEAL,
+                          fontFamily: FONT,
+                          borderRadius: 8,
+                        }}
+                        onFocus={(e) => {
+                          (e.currentTarget as HTMLElement).style.borderColor = GOLD
+                        }}
+                        onBlur={(e) => {
+                          (e.currentTarget as HTMLElement).style.borderColor = '#E8E4DC'
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label
+                    className="text-xs font-bold uppercase tracking-wider"
+                    style={{ color: '#888', fontFamily: FONT }}
+                  >
+                    E-mail
                   </label>
                   <input
-                    type={type}
-                    placeholder={placeholder}
-                    className="px-4 py-3 text-sm focus:outline-none"
+                    type="email"
+                    placeholder="seu@email.com"
+                    className="px-4 py-3 text-sm focus:outline-none transition-all"
                     style={{
-                      background: 'rgba(255,255,255,0.05)',
-                      border: '1px solid rgba(201,160,96,0.2)',
-                      color: 'white',
+                      background: CREAM,
+                      border: '1.5px solid #E8E4DC',
+                      color: TEAL,
                       fontFamily: FONT,
+                      borderRadius: 8,
+                    }}
+                    onFocus={(e) => {
+                      (e.currentTarget as HTMLElement).style.borderColor = GOLD
+                    }}
+                    onBlur={(e) => {
+                      (e.currentTarget as HTMLElement).style.borderColor = '#E8E4DC'
                     }}
                   />
                 </div>
-              ))}
-            </div>
 
-            <div className="flex flex-col gap-2">
-              <label
-                className="text-xs font-bold uppercase tracking-widest"
-                style={{ color: 'rgba(201,160,96,0.65)', fontFamily: FONT }}
-              >
-                E-mail
-              </label>
-              <input
-                type="email"
-                placeholder="seu@email.com"
-                className="px-4 py-3 text-sm focus:outline-none"
-                style={{
-                  background: 'rgba(255,255,255,0.05)',
-                  border: '1px solid rgba(201,160,96,0.2)',
-                  color: 'white',
-                  fontFamily: FONT,
-                }}
-              />
-            </div>
+                <div className="flex flex-col gap-2">
+                  <label
+                    className="text-xs font-bold uppercase tracking-wider"
+                    style={{ color: '#888', fontFamily: FONT }}
+                  >
+                    Interesse
+                  </label>
+                  <select
+                    className="px-4 py-3 text-sm focus:outline-none appearance-none transition-all"
+                    style={{
+                      background: CREAM,
+                      border: '1.5px solid #E8E4DC',
+                      color: TEAL,
+                      fontFamily: FONT,
+                      borderRadius: 8,
+                    }}
+                    onFocus={(e) => {
+                      (e.currentTarget as HTMLElement).style.borderColor = GOLD
+                    }}
+                    onBlur={(e) => {
+                      (e.currentTarget as HTMLElement).style.borderColor = '#E8E4DC'
+                    }}
+                  >
+                    <option value="">Selecione...</option>
+                    <option value="comprar">Quero comprar</option>
+                    <option value="alugar">Quero alugar</option>
+                    <option value="vender">Quero vender meu imóvel</option>
+                  </select>
+                </div>
 
-            <div className="flex flex-col gap-2">
-              <label
-                className="text-xs font-bold uppercase tracking-widest"
-                style={{ color: 'rgba(201,160,96,0.65)', fontFamily: FONT }}
-              >
-                Interesse
-              </label>
-              <select
-                className="px-4 py-3 text-sm focus:outline-none appearance-none"
-                style={{
-                  background: 'rgba(255,255,255,0.05)',
-                  border: '1px solid rgba(201,160,96,0.2)',
-                  color: 'rgba(255,255,255,0.55)',
-                  fontFamily: FONT,
-                }}
-              >
-                <option value="" style={{ background: TEAL }}>
-                  Selecione...
-                </option>
-                <option value="comprar" style={{ background: TEAL }}>
-                  Quero comprar
-                </option>
-                <option value="alugar" style={{ background: TEAL }}>
-                  Quero alugar
-                </option>
-                <option value="vender" style={{ background: TEAL }}>
-                  Quero vender meu imóvel
-                </option>
-              </select>
-            </div>
+                <div className="flex flex-col gap-2">
+                  <label
+                    className="text-xs font-bold uppercase tracking-wider"
+                    style={{ color: '#888', fontFamily: FONT }}
+                  >
+                    Mensagem
+                  </label>
+                  <textarea
+                    rows={4}
+                    placeholder="Descreva o imóvel que você busca..."
+                    className="px-4 py-3 text-sm focus:outline-none resize-none transition-all"
+                    style={{
+                      background: CREAM,
+                      border: '1.5px solid #E8E4DC',
+                      color: TEAL,
+                      fontFamily: FONT,
+                      borderRadius: 8,
+                    }}
+                    onFocus={(e) => {
+                      (e.currentTarget as HTMLElement).style.borderColor = GOLD
+                    }}
+                    onBlur={(e) => {
+                      (e.currentTarget as HTMLElement).style.borderColor = '#E8E4DC'
+                    }}
+                  />
+                </div>
 
-            <div className="flex flex-col gap-2">
-              <label
-                className="text-xs font-bold uppercase tracking-widest"
-                style={{ color: 'rgba(201,160,96,0.65)', fontFamily: FONT }}
-              >
-                Mensagem
-              </label>
-              <textarea
-                rows={4}
-                placeholder="Descreva o imóvel que você busca..."
-                className="px-4 py-3 text-sm focus:outline-none resize-none"
-                style={{
-                  background: 'rgba(255,255,255,0.05)',
-                  border: '1px solid rgba(201,160,96,0.2)',
-                  color: 'white',
-                  fontFamily: FONT,
-                }}
-              />
+                <button
+                  type="submit"
+                  className="py-4 text-sm font-extrabold tracking-widest uppercase mt-1 transition-all"
+                  style={{
+                    background: TEAL,
+                    color: 'white',
+                    fontFamily: FONT,
+                    borderRadius: 10,
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.background = GOLD
+                    ;(e.currentTarget as HTMLElement).style.color = TEAL_DARK
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.background = TEAL
+                    ;(e.currentTarget as HTMLElement).style.color = 'white'
+                  }}
+                >
+                  Enviar Mensagem
+                </button>
+              </form>
             </div>
-
-            <button
-              type="submit"
-              className="py-4 text-sm font-extrabold tracking-widest uppercase mt-2 transition-opacity hover:opacity-85"
-              style={{ background: GOLD, color: TEAL, fontFamily: FONT }}
-            >
-              Enviar Mensagem
-            </button>
-          </form>
+          </div>
         </div>
       </section>
 
@@ -738,11 +1006,11 @@ export default function JustinoBrokersHome() {
           borderTop: '1px solid rgba(201,160,96,0.1)',
         }}
       >
-        <div className="max-w-7xl mx-auto px-6 py-14">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div className="max-w-7xl mx-auto px-6 py-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {/* Brand */}
             <div>
-              <div className="flex items-center gap-3 mb-5">
+              <div className="flex items-center gap-3 mb-6">
                 <Logo size={46} />
                 <div>
                   <p
@@ -761,41 +1029,34 @@ export default function JustinoBrokersHome() {
               </div>
               <p
                 className="text-sm leading-relaxed"
-                style={{
-                  color: 'rgba(255,255,255,0.32)',
-                  fontFamily: FONT,
-                }}
+                style={{ color: 'rgba(255,255,255,0.3)', fontFamily: FONT, maxWidth: 280 }}
               >
-                Especialistas em imóveis de alto padrão em Itajaí e região.
-                Realizando sonhos com elegância e excelência.
+                Especialistas em imóveis de alto padrão em Itajaí e região. Realizando sonhos com elegância e excelência.
               </p>
             </div>
 
-            {/* Links */}
+            {/* Navigation */}
             <div>
               <p
-                className="text-xs font-extrabold uppercase tracking-widest mb-5"
-                style={{ color: 'rgba(201,160,96,0.55)', fontFamily: FONT }}
+                className="text-xs font-extrabold uppercase tracking-widest mb-6"
+                style={{ color: 'rgba(201,160,96,0.5)', fontFamily: FONT }}
               >
                 Navegação
               </p>
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3.5">
                 {[
                   { href: '/justinoimoveis', label: 'Início' },
                   { href: '#imoveis', label: 'Imóveis em Destaque' },
+                  { href: '#sobre', label: 'Sobre Nós' },
                   { href: '#contato', label: 'Falar com Especialista' },
                 ].map(({ href, label }) => (
                   <a
                     key={label}
                     href={href}
                     className="text-sm font-medium transition-colors"
-                    style={{ color: 'rgba(255,255,255,0.32)', fontFamily: FONT }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.color = GOLD)
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.color = 'rgba(255,255,255,0.32)')
-                    }
+                    style={{ color: 'rgba(255,255,255,0.3)', fontFamily: FONT }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = GOLD)}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.3)')}
                   >
                     {label}
                   </a>
@@ -806,41 +1067,38 @@ export default function JustinoBrokersHome() {
             {/* Contact */}
             <div>
               <p
-                className="text-xs font-extrabold uppercase tracking-widest mb-5"
-                style={{ color: 'rgba(201,160,96,0.55)', fontFamily: FONT }}
+                className="text-xs font-extrabold uppercase tracking-widest mb-6"
+                style={{ color: 'rgba(201,160,96,0.5)', fontFamily: FONT }}
               >
                 Contato
               </p>
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-4">
                 {[
                   { Icon: Phone, text: '(47) 9 9999-9999' },
                   { Icon: Mail, text: 'contato@justinobrokers.com.br' },
                   { Icon: MapPin, text: 'Itajaí, Santa Catarina' },
                 ].map(({ Icon, text }) => (
-                  <div key={text} className="flex items-center gap-2.5">
-                    <Icon size={13} style={{ color: GOLD, flexShrink: 0 }} />
+                  <div key={text} className="flex items-center gap-3">
+                    <Icon size={14} style={{ color: GOLD, flexShrink: 0 }} />
                     <span
                       className="text-sm"
-                      style={{
-                        color: 'rgba(255,255,255,0.38)',
-                        fontFamily: FONT,
-                      }}
+                      style={{ color: 'rgba(255,255,255,0.35)', fontFamily: FONT }}
                     >
                       {text}
                     </span>
                   </div>
                 ))}
 
-                {/* Social */}
-                <div className="flex gap-2 mt-1">
+                <div className="flex gap-2.5 mt-1">
                   {[Instagram, Facebook].map((Icon, i) => (
                     <a
                       key={i}
                       href="#"
-                      className="w-8 h-8 flex items-center justify-center transition-colors"
+                      className="w-9 h-9 flex items-center justify-center transition-all"
                       style={{
                         border: '1px solid rgba(201,160,96,0.2)',
                         color: 'rgba(255,255,255,0.35)',
+                        borderRadius: 8,
                       }}
                       onMouseEnter={(e) => {
                         const el = e.currentTarget as HTMLElement
@@ -853,7 +1111,7 @@ export default function JustinoBrokersHome() {
                         el.style.color = 'rgba(255,255,255,0.35)'
                       }}
                     >
-                      <Icon size={14} />
+                      <Icon size={15} />
                     </a>
                   ))}
                 </div>
@@ -862,18 +1120,14 @@ export default function JustinoBrokersHome() {
           </div>
 
           <div
-            className="mt-10 pt-6 flex flex-col md:flex-row items-center justify-between gap-3"
+            className="mt-12 pt-7 flex flex-col md:flex-row items-center justify-between gap-3"
             style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}
           >
             <p
               className="text-xs"
-              style={{
-                color: 'rgba(255,255,255,0.18)',
-                fontFamily: FONT,
-              }}
+              style={{ color: 'rgba(255,255,255,0.18)', fontFamily: FONT }}
             >
-              © {new Date().getFullYear()} Justino Brokers · Todos os direitos
-              reservados.
+              © {new Date().getFullYear()} Justino Brokers · Todos os direitos reservados.
             </p>
             <p
               className="text-xs"
