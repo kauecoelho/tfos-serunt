@@ -1284,7 +1284,7 @@ export const SLIDES: Slide[] = [
     variant: "offer",
     imageSrc: "/mockups/Bundle Stup.png",
     label: "O seu investimento hoje para ter acesso à tudo isso é",
-    parts: [t("12x de R$ 16,42")],
+    parts: [t("12x de R$ 23,25")],
   },
 
   {
@@ -1294,7 +1294,7 @@ export const SLIDES: Slide[] = [
   },
   {
     id: 163,
-    parts: [t("R$ 16,42 por mês.")],
+    parts: [t("R$ 23,25 por mês.")],
   },
   {
     id: 164,
