@@ -37,7 +37,8 @@ export type SlideVariant =
   | "cycle"
   | "list-logos"
   | "table"
-  | "split";
+  | "split"
+  | "offer";
 
 export type TableRow = {
   cells: string[];
@@ -953,10 +954,11 @@ export const SLIDES: Slide[] = [
     parts: [p("Vou te mostrar três deles.")],
   },
 
-  /* ── CASES REAIS (split: texto + placeholder print wpp) ──────────────── */
+  /* ── CASES REAIS (split: texto + foto de prova social) ──────────────── */
   {
     id: 119,
     variant: "split",
+    imageSrc: "/provas/helio.png",
     parts: [
       t("Hélio."),
       p(" Arquiteto. Faturava "),
@@ -969,6 +971,7 @@ export const SLIDES: Slide[] = [
   {
     id: 120,
     variant: "split",
+    imageSrc: "/provas/antonio.png",
     parts: [
       t("Antônio."),
       p(" Engenheiro no Paraná. CLT. Vendiam o projeto dele por "),
@@ -981,12 +984,13 @@ export const SLIDES: Slide[] = [
   {
     id: 121,
     variant: "split",
+    imageSrc: "/provas/alao.png",
     parts: [
-      t("Letícia."),
-      p(" Era estagiária. Ganhava "),
-      r("2.500."),
-      p(" Comprou o método. Saiu do estágio. Hoje tem empresa própria. "),
-      t("90% das vendas vêm do tráfego pago."),
+      p("Ou então o "),
+      t("Alão,"),
+      p(" que fechou seu primeiro projeto de "),
+      t("R$ 16.000,00"),
+      p(" pelo tráfego."),
     ],
   },
   {
@@ -1355,10 +1359,12 @@ export const SLIDES: Slide[] = [
     parts: [t("Clica, garante seu acesso e começa hoje.")],
   },
 
-  /* ── QUEBRA DE OBJEÇÕES ──────────────────────────────────────────────── */
+  /* ── OFERTA (texto verde topo + imagem bundle 2/3 baixo) ────────────── */
   {
     id: 174,
-    parts: [p("Bom.")],
+    variant: "offer",
+    imageSrc: "/provas/Bundle Stup.png",
+    parts: [t("R$ 197,00 à vista.")],
   },
   {
     id: 175,

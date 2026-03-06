@@ -231,6 +231,22 @@ function renderSlide(slide: Slide): React.ReactNode {
         </section>
       );
 
+    /* ── Oferta: texto no topo (1/3) + imagem na base (2/3) ────────────── */
+    case "offer":
+      return (
+        <section key={id} className="s-offer">
+          {labelEl}
+          <div className="offer-text">
+            <p className="st st-offer">{renderParts(parts)}</p>
+          </div>
+          {imageSrc && (
+            <div className="offer-img-wrap">
+              <img src={imageSrc} alt="" className="offer-img" />
+            </div>
+          )}
+        </section>
+      );
+
     /* ── Frase padrão (phrase) ───────────────────────────────────────────── */
     default:
       return (
@@ -742,15 +758,15 @@ export default function PauloBastos() {
           text-align: left;
         }
         .split-left .st {
-          font-size:   clamp(0.95rem, 1.75vw, 1.55rem) !important;
-          line-height: 1.7  !important;
+          font-size:   clamp(1.1rem, 2vw, 1.8rem) !important;
+          line-height: 1.65 !important;
           text-align:  left !important;
           max-width:   100% !important;
         }
         .split-right {
           flex:            0 0 auto;
-          width:           calc(58vh * 9 / 16);
-          height:          58vh;
+          width:           calc(68vh * 9 / 16);
+          height:          68vh;
           background:      #EDECEA;
           border:          2px dashed #C8C4BC;
           border-radius:   18px;
@@ -828,6 +844,42 @@ export default function PauloBastos() {
           object-fit:    cover;
           border-radius: 18px;
           display:       block;
+        }
+
+        /* ── Variante: Offer (texto no topo + imagem na base) ───────────────── */
+        .reveal section.s-offer {
+          padding:         0 !important;
+          flex-direction:  column !important;
+          justify-content: flex-start !important;
+          align-items:     stretch !important;
+          background:      #fff !important;
+        }
+        .offer-text {
+          height:          33.33%;
+          display:         flex;
+          align-items:     center;
+          justify-content: center;
+          padding:         0 8vw;
+          box-sizing:      border-box;
+        }
+        .st-offer {
+          font-size:      clamp(2rem, 4.5vw, 4rem) !important;
+          font-weight:    800 !important;
+          color:          var(--teal) !important;
+          text-align:     center !important;
+          max-width:      100% !important;
+          letter-spacing: -0.02em !important;
+        }
+        .offer-img-wrap {
+          height:   66.67%;
+          width:    100%;
+          overflow: hidden;
+        }
+        .offer-img {
+          width:      100%;
+          height:     100%;
+          object-fit: cover;
+          display:    block;
         }
 
         /* ── Variante: Cycle (fluxograma B→E→T→A) ───────────────────────────── */
