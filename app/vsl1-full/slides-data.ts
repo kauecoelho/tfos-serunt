@@ -1278,11 +1278,12 @@ export const SLIDES: Slide[] = [
     parts: [r("Não vai pagar R$ 500.")],
   },
 
-  /* ── SLIDE 161: FUNDO VERDE (Mudança #23) ────────────────────────────── */
+  /* ── SLIDE 161: OFERTA (texto verde topo + imagem bundle 2/3 baixo) ──── */
   {
     id: 161,
-    variant: "green-impact",
-    parts: [p("O investimento pra entrar no Setup BETA hoje é R$ 197 à vista.")],
+    variant: "offer",
+    imageSrc: "/provas/Bundle Stup.png",
+    parts: [t("R$ 197,00 à vista.")],
   },
 
   {
@@ -1359,12 +1360,10 @@ export const SLIDES: Slide[] = [
     parts: [t("Clica, garante seu acesso e começa hoje.")],
   },
 
-  /* ── OFERTA (texto verde topo + imagem bundle 2/3 baixo) ────────────── */
+  /* ── QUEBRA DE OBJEÇÕES ──────────────────────────────────────────────── */
   {
     id: 174,
-    variant: "offer",
-    imageSrc: "/provas/Bundle Stup.png",
-    parts: [t("R$ 197,00 à vista.")],
+    parts: [p("Bom.")],
   },
   {
     id: 175,
