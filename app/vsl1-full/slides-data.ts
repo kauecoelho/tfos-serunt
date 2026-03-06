@@ -75,9 +75,9 @@ export const SLIDES: Slide[] = [
   {
     id: 1,
     parts: [
-      p("O maior setor da economia brasileira é a "),
+      p("O maior setor da economia brasileira é o da "),
       t("indústria"),
-      p(" e a "),
+      p(" e da "),
       t("construção civil."),
     ],
   },
@@ -1067,7 +1067,7 @@ export const SLIDES: Slide[] = [
     id: 132,
     parts: [
       p("E é exatamente isso que o "),
-      t("Sistema BETA"),
+      t("Setup BETA"),
       p(" entrega."),
     ],
   },
@@ -1109,7 +1109,7 @@ export const SLIDES: Slide[] = [
   /* ── APRESENTAÇÃO DO PRODUTO ─────────────────────────────────────────── */
   {
     id: 139,
-    parts: [t("O Sistema BETA completo.")],
+    parts: [t("O Setup BETA completo.")],
   },
   {
     id: 140,
@@ -1162,7 +1162,7 @@ export const SLIDES: Slide[] = [
   /* ── EMPILHAMENTO DE BÔNUS ───────────────────────────────────────────── */
   {
     id: 147,
-    parts: [p("Junto com o sistema, você recebe:")],
+    parts: [p("Junto com o setup, você recebe:")],
   },
 
   /* ── SLIDES 148–151: APENAS O NOME DO BÔNUS (Mudanças #18–21) ────────── */
@@ -1278,7 +1278,7 @@ export const SLIDES: Slide[] = [
   {
     id: 161,
     variant: "green-impact",
-    parts: [p("O investimento pra entrar no Sistema BETA hoje é R$ 197 à vista.")],
+    parts: [p("O investimento pra entrar no Setup BETA hoje é R$ 197 à vista.")],
   },
 
   {
@@ -1581,6 +1581,6 @@ export const SLIDES: Slide[] = [
   {
     id: 216,
     variant: "dark",
-    parts: [p("Até dentro do Sistema BETA.")],
+    parts: [p("Até dentro do Setup.")],
   },
 ];
