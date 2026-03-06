@@ -235,8 +235,8 @@ function renderSlide(slide: Slide): React.ReactNode {
     case "offer":
       return (
         <section key={id} className="s-offer">
-          {labelEl}
           <div className="offer-text">
+            {label && <p className="st st-offer-sub">{label}</p>}
             <p className="st st-offer">{renderParts(parts)}</p>
           </div>
           {imageSrc && (
@@ -862,6 +862,18 @@ export default function PauloBastos() {
           padding:         0 8vw;
           box-sizing:      border-box;
         }
+        .offer-text {
+          flex-direction: column !important;
+          gap:            0.6vh;
+        }
+        .st-offer-sub {
+          font-size:      clamp(1rem, 2vw, 1.8rem) !important;
+          font-weight:    600 !important;
+          color:          var(--text) !important;
+          text-align:     center !important;
+          max-width:      100% !important;
+          margin:         0 !important;
+        }
         .st-offer {
           font-size:      clamp(2rem, 4.5vw, 4rem) !important;
           font-weight:    800 !important;
@@ -869,6 +881,7 @@ export default function PauloBastos() {
           text-align:     center !important;
           max-width:      100% !important;
           letter-spacing: -0.02em !important;
+          margin:         0 !important;
         }
         .offer-img-wrap {
           height:   66.67%;

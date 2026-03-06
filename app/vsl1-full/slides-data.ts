@@ -1283,15 +1283,14 @@ export const SLIDES: Slide[] = [
     id: 161,
     variant: "offer",
     imageSrc: "/mockups/Bundle Stup.png",
-    parts: [t("R$ 197,00 à vista.")],
+    label: "O seu investimento hoje para ter acesso à tudo isso é",
+    parts: [t("12x de R$ 16,42")],
   },
 
   {
     id: 162,
-    parts: [
-      p("Ou "),
-      t("12 vezes de R$ 16,42 no cartão."),
-    ],
+    variant: "green-impact",
+    parts: [p("Ou R$ 197,00 à vista.")],
   },
   {
     id: 163,
